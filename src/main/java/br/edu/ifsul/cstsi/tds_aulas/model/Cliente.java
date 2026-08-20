@@ -1,7 +1,6 @@
 package br.edu.ifsul.cstsi.tds_aulas.model;
 
 import java.util.Collection;
-import java.util.List;
 
 public class Cliente { //UserDetails usuário padrão do Spring Boot
     private Long id;
