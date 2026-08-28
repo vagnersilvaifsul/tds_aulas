@@ -18,6 +18,7 @@ public class Cliente { //UserDetails usuário padrão do Spring Boot
     private Byte situacao;
 
     //Associações
-    //private Collection<Pedido> pedidos;
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.EAGER)
+    private Collection<Pedido> pedidos;
 
 }

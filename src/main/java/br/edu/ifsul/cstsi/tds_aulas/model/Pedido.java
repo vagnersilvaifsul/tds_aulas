@@ -1,15 +1,13 @@
 package br.edu.ifsul.cstsi.tds_aulas.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collection;
 
 @Entity
+@Table(name = "pedidos")
 public class Pedido {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +20,8 @@ public class Pedido {
     private BigDecimal totalPedido;
 
     //Associações
-//    private Collection<Item> items;
-//
-//    private Cliente cliente;
+    @OneToMany(mappedBy = "pedido", fetch = FetchType.EAGER)
+    private Collection<Item> items;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Cliente cliente;
 }

@@ -1,13 +1,11 @@
 package br.edu.ifsul.cstsi.tds_aulas.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 
 @Entity
+@Table(name = "itens")
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,8 +15,8 @@ public class Item {
     private Byte situacao;
 
     //Associações
-
-//    private Pedido pedido;
-//
-//    private Produto produto;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Pedido pedido;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Produto produto;
 }
