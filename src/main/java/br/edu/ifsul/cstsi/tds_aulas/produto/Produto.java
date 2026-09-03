@@ -1,4 +1,4 @@
-package br.edu.ifsul.cstsi.tds_aulas.model;
+package br.edu.ifsul.cstsi.tds_aulas.produto;
 
 import jakarta.persistence.*;
 

@@ -1,5 +1,6 @@
-package br.edu.ifsul.cstsi.tds_aulas.model;
+package br.edu.ifsul.cstsi.tds_aulas.cliente;
 
+import br.edu.ifsul.cstsi.tds_aulas.pedido.Pedido;
 import jakarta.persistence.*;
 
 import java.util.Collection;

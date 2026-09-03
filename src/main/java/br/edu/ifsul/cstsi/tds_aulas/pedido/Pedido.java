@@ -1,5 +1,7 @@
-package br.edu.ifsul.cstsi.tds_aulas.model;
+package br.edu.ifsul.cstsi.tds_aulas.pedido;
 
+import br.edu.ifsul.cstsi.tds_aulas.cliente.Cliente;
+import br.edu.ifsul.cstsi.tds_aulas.item.Item;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
