@@ -17,42 +17,63 @@ public class ProdutoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProdutoDto>> findAll() {
-        return ResponseEntity.ok(
-                produtoRepository.findAll().stream()
-                        .map(ProdutoDto::new)
-                        .toList()
-        );
+    public ResponseEntity<List<ProdutoDtoResponse>> findAll(){
+
+        return ResponseEntity.ok(produtoRepository.findAll().stream().map(ProdutoDtoResponse::new).toList());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProdutoDto> findById(@PathVariable(value = "id") Long id) {
-        var produto = produtoRepository.findById(id);
-        if(produto.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(produto.map(ProdutoDto::new).get());
+    public ResponseEntity<Produto> findById(@PathVariable Long id){
+        var optionalProduto = produtoRepository.findById(id);
+        return optionalProduto.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/nome/{nome}")
-    public ResponseEntity<List<Produto>> findByNome(@PathVariable(value = "nome") String nome) {
-        return ResponseEntity.ok(produtoRepository.findByNomeQuerySpeakSQL(nome).get());
+    public ResponseEntity<List<Produto>> findByNome(@PathVariable String nome){
+        var produtos = produtoRepository.findByNomeStartingWith(nome);
+        if (produtos.isPresent() && !produtos.get().isEmpty()) {
+            return ResponseEntity.ok(produtos.get());
+        }
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping
-    public ResponseEntity<String> insert(@RequestBody Produto produto, UriComponentsBuilder uriBuilder){
-        var p = produtoRepository.save(produto);
+    public ResponseEntity<String> insert(@RequestBody ProdutoDtoPost produtoDTOPost, UriComponentsBuilder uriBuilder){
+        var p = produtoRepository.save(new Produto(
+                null,
+                produtoDTOPost.nome(),
+                produtoDTOPost.valorDeCompra(),
+                produtoDTOPost.valorDeVenda(),
+                produtoDTOPost.descricao(),
+                true,
+                produtoDTOPost.estoque()
+        ));
         var location = uriBuilder.path("api/v1/produtos/{id}").buildAndExpand(p.getId()).toUri();
         return ResponseEntity.created(location).build();
     }
 
     @PutMapping("{id}")
-    public String update(@PathVariable(value = "id") Long id, @RequestBody Produto produto) {
-        return "update " + produto;
+    public ResponseEntity<ProdutoDtoResponse> update(@PathVariable Long id, @RequestBody ProdutoDtoPut produtoDTOPut){
+        var p = produtoRepository.save(new Produto(
+                id,
+                produtoDTOPut.nome(),
+                produtoDTOPut.valorDeCompra(),
+                produtoDTOPut.valorDeVenda(),
+                produtoDTOPut.descricao(),
+                produtoDTOPut.situacao(),
+                produtoDTOPut.estoque()
+        ));
+        return p != null ?
+                ResponseEntity.ok(new ProdutoDtoResponse(p)) :
+                ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("{id}")
-    public String delete(@PathVariable(value = "id") Long id) {
-        return "delete " + id;
+    public ResponseEntity<String> delete(@PathVariable Long id) {
+        if (produtoRepository.existsById(id)) {
+            produtoRepository.deleteById(id);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }
