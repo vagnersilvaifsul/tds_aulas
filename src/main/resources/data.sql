@@ -4,3 +4,18 @@ VALUES (1, 'Café', 'Café em pó tradicional Igaçu lata 400g', 100, 5.00, 10.0
        (3, 'Chá Preto', 'Prenda', 100, 5.00, 10.00, true),
        (4, 'Arroz', 'Arroz Camil branco polido tipo 1 pacote 5kg', 100, 5.00, 10.00, true),
        (5, 'Feijão', 'Feijão Tordilho pacote 1kg', 100, 5.00, 10.00, true);
+
+insert into perfis(id, nome)
+values (1, 'ROLE_ADMIN');
+insert into perfis(id, nome)
+values (2, 'ROLE_USER');
+
+insert into clientes(id, nome, sobrenome, email, senha, is_confirmado, situacao)
+values (1, 'Admin', 'do Sistema', 'admin@email.com', '$2a$10$.hfbMtEdUaLcmkygALEqTetcW8u8BcrzWFK9bOHpBHhkTwv7MCv8C',true, true);
+insert into clientes(id, nome, sobrenome, email, senha, is_confirmado, situacao)
+values (2, 'Usuario', 'do Sistema', 'user@email.com', '$2a$10$.hfbMtEdUaLcmkygALEqTetcW8u8BcrzWFK9bOHpBHhkTwv7MCv8C',true, true);
+
+insert into clientes_perfis(clientes_id, perfis_id)
+values (1, 1);
+insert into clientes_perfis(clientes_id, perfis_id)
+values (2, 2);
