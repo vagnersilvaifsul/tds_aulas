@@ -4,6 +4,7 @@ package br.edu.ifsul.cstsi.tds_aulas.autenticacao;
 import br.edu.ifsul.cstsi.tds_aulas.cliente.Cliente;
 import br.edu.ifsul.cstsi.tds_aulas.infra.jwt.TokenJwtDto;
 import br.edu.ifsul.cstsi.tds_aulas.infra.jwt.TokenService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,7 +27,7 @@ public class AutenticacaoController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<TokenJwtDto> efetuaLogin(@RequestBody UsuarioAutenticacaoDto data) {
+    public ResponseEntity<TokenJwtDto> efetuaLogin(@Valid @RequestBody UsuarioAutenticacaoDto data) {
         var authenticationDTO = new UsernamePasswordAuthenticationToken(data.email(), data.senha()); //converte o DTO em DTO do Spring Security
 
         var authentication = manager.authenticate(authenticationDTO); //autentica o usuário (esse objeto contém o usuário e a senha)

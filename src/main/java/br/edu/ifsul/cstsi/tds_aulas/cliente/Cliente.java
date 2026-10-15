@@ -80,7 +80,7 @@ public class Cliente implements UserDetails { //UserDetails usuário padrão do 
     //Método utilitário para gerar o Hash da senha
     public static void main(String[] args) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        System.out.println(encoder.encode("123"));
+        System.out.println(encoder.encode("Teste12@"));
     }
 
 }
