@@ -25,18 +25,18 @@ public class ProdutoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Produto> findById(@PathVariable Long id){
-        var optionalProduto = produtoRepository.findById(id);
-        return optionalProduto.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<ProdutoDtoResponse> findById(@PathVariable Long id){
+        return produtoRepository.findById(id)
+                .map(produto -> ResponseEntity.ok(new ProdutoDtoResponse(produto))) //200 OK
+                .orElseGet(() -> ResponseEntity.notFound().build()); //404 Not Found
     }
 
     @GetMapping("/nome/{nome}")
-    public ResponseEntity<List<Produto>> findByNome(@PathVariable String nome){
-        var produtos = produtoRepository.findByNomeStartingWith(nome);
-        if (produtos.isPresent() && !produtos.get().isEmpty()) {
-            return ResponseEntity.ok(produtos.get());
-        }
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<List<ProdutoDtoResponse>> findByNome(@PathVariable String nome){
+        var produtos = produtoRepository.findByNomeStartingWith(nome).stream().map(ProdutoDtoResponse::new).toList();
+        return produtos.isEmpty()
+                ? ResponseEntity.noContent().build() //204 No Content
+                : ResponseEntity.ok(produtos); //200 OK
     }
 
     @PostMapping
